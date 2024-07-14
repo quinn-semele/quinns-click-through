@@ -64,15 +64,17 @@ public abstract class ClickThroughMixin {
             return;
         }
 
-        var supportingBlockPos = ClickThrough.canClickThroughEntity(level, player, hit);
+        BlockPos supportingBlockPos = ClickThrough.canClickThroughEntity(level, player, hit);
 
         if (supportingBlockPos != null) {
             if (ClickThrough.shouldInteractWith(level, supportingBlockPos)) {
                 float partialTicks = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
                 var closest = level.getBlockState(supportingBlockPos).getShape(level, supportingBlockPos).move(supportingBlockPos.getX(), supportingBlockPos.getY(), supportingBlockPos.getZ()).closestPointTo(player.getEyePosition(partialTicks));
+
                 hitResult = new BlockHitResult(closest.orElse(Vec3.atCenterOf(supportingBlockPos)), Direction.getNearest(player.getLookAngle()), supportingBlockPos, false);
                 startUseItem();
                 hitResult = hit;
+
                 ci.cancel();
             }
         }
