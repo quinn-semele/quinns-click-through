@@ -8,6 +8,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.util.List;
@@ -15,10 +16,10 @@ import java.util.Optional;
 
 public class Config {
 //    public static BlockHolders interactableBlocks = new BlockHolders();
-//    public static BlockHolders clickThroughBlocks = new BlockHolders();
+    public static BlockHolders clickThroughBlocks = new BlockHolders();
     public static EntityHolders clickThroughEntities = new EntityHolders();
 //    public static boolean includeMenus = false;
-//    public static boolean includeSigns = false;
+    public static boolean includeSigns = false;
     public static boolean includeItemFrames = false;
 
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
@@ -31,13 +32,13 @@ public class Config {
 //            .comment("Should blocks that have guis all be considered interactable when behind a sign?")
 //            .define("include_menus", true);
 
-//    public static final ModConfigSpec.ConfigValue<List<? extends String>> CLICK_THROUGH_BLOCKS = BUILDER
-//            .comment("A list of blocks or tags that can be clicked through.")
-//            .defineListAllowEmpty("click_through_blocks", List.of(), string -> true);
+    public static final ModConfigSpec.ConfigValue<List<? extends String>> CLICK_THROUGH_BLOCKS = BUILDER
+            .comment("A list of blocks or tags that can be clicked through.")
+            .defineListAllowEmpty("click_through_blocks", List.of("framedblocks:framed_item_frame", "framedblocks:framed_glowing_item_frame"), string -> true);
 
-//    public static final ModConfigSpec.BooleanValue INCLUDE_SIGNS = BUILDER
-//            .comment("Should all sign blocks be allowed to be clicked through?")
-//            .define("include_signs", true);
+    public static final ModConfigSpec.BooleanValue INCLUDE_SIGNS = BUILDER
+            .comment("Should all sign blocks be allowed to be clicked through?")
+            .define("include_signs", true);
 
     public static final ModConfigSpec.ConfigValue<List<? extends String>> CLICK_THROUGH_ENTITIES = BUILDER
             .comment("A list of entities or tags that can be clicked through.")
@@ -51,7 +52,7 @@ public class Config {
 
     public static void loadConfig() {
 //        includeMenus = INCLUDE_MENUS.getAsBoolean();
-//        includeSigns = INCLUDE_SIGNS.getAsBoolean();
+        includeSigns = INCLUDE_SIGNS.getAsBoolean();
         includeItemFrames = INCLUDE_ITEM_FRAMES.getAsBoolean();
 
 //        /* Interactable blocks */ {
@@ -68,19 +69,19 @@ public class Config {
 //            }
 //        }
 
-//        /* Click through blocks */ {
-//            clickThroughBlocks.clear();
-//            var elements = ExtraCodecs.TAG_OR_ELEMENT_ID.listOf().parse(new Dynamic<>(JavaOps.INSTANCE, CLICK_THROUGH_BLOCKS.get())).getOrThrow();
-//            for (ExtraCodecs.TagOrElementLocation element : elements) {
-//                if (element.tag()) {
-//                    Optional<HolderSet.Named<Block>> tag = BuiltInRegistries.BLOCK.getTag(TagKey.create(Registries.BLOCK, element.id()));
-//
-//                    tag.ifPresent(clickThroughBlocks::add);
-//                } else {
-//                    BuiltInRegistries.BLOCK.getHolder(element.id()).ifPresent(clickThroughBlocks::add);
-//                }
-//            }
-//        }
+        /* Click through blocks */ {
+            clickThroughBlocks.clear();
+            var elements = ExtraCodecs.TAG_OR_ELEMENT_ID.listOf().parse(new Dynamic<>(JavaOps.INSTANCE, CLICK_THROUGH_BLOCKS.get())).getOrThrow();
+            for (ExtraCodecs.TagOrElementLocation element : elements) {
+                if (element.tag()) {
+                    Optional<HolderSet.Named<Block>> tag = BuiltInRegistries.BLOCK.getTag(TagKey.create(Registries.BLOCK, element.id()));
+
+                    tag.ifPresent(clickThroughBlocks::add);
+                } else {
+                    BuiltInRegistries.BLOCK.getHolder(element.id()).ifPresent(clickThroughBlocks::add);
+                }
+            }
+        }
 
         /* Click through entities */ {
             clickThroughEntities.clear();

@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -42,7 +43,7 @@ public abstract class ClickThroughMixin {
             return original.call(instance, player, hand, hit);
         }
 
-        var supportingBlockPos = ClickThrough.canClickThroughBlock(level, hit.getBlockPos());
+        BlockPos supportingBlockPos = ClickThrough.canClickThroughBlock(level, hit);
 
         if (supportingBlockPos != null) {
             if (ClickThrough.shouldInteractWith(level, supportingBlockPos)) {
@@ -67,7 +68,9 @@ public abstract class ClickThroughMixin {
 
         if (supportingBlockPos != null) {
             if (ClickThrough.shouldInteractWith(level, supportingBlockPos)) {
-                hitResult = new BlockHitResult(Vec3.atCenterOf(supportingBlockPos), Direction.getNearest(player.getLookAngle()), supportingBlockPos, false);
+                float partialTicks = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
+                var closest = level.getBlockState(supportingBlockPos).getShape(level, supportingBlockPos).move(supportingBlockPos.getX(), supportingBlockPos.getY(), supportingBlockPos.getZ()).closestPointTo(player.getEyePosition(partialTicks));
+                hitResult = new BlockHitResult(closest.orElse(Vec3.atCenterOf(supportingBlockPos)), Direction.getNearest(player.getLookAngle()), supportingBlockPos, false);
                 startUseItem();
                 hitResult = hit;
                 ci.cancel();
