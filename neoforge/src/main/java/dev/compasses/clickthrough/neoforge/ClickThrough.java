@@ -94,7 +94,7 @@ public class ClickThrough {
     @SuppressWarnings("DataFlowIssue")
     private static BlockPos raytraceBlockBehindTarget(BlockPos target) {
         LocalPlayer player = Minecraft.getInstance().player;
-        float partialTicks = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
+        float partialTicks = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
         Vec3 eyePosition = player.getEyePosition(partialTicks);
         Vec3 viewVector = player.getViewVector(partialTicks);
         double hitDistance = player.blockInteractionRange();

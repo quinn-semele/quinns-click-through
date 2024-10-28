@@ -74,11 +74,11 @@ public class Config {
             var elements = ExtraCodecs.TAG_OR_ELEMENT_ID.listOf().parse(new Dynamic<>(JavaOps.INSTANCE, CLICK_THROUGH_BLOCKS.get())).getOrThrow();
             for (ExtraCodecs.TagOrElementLocation element : elements) {
                 if (element.tag()) {
-                    Optional<HolderSet.Named<Block>> tag = BuiltInRegistries.BLOCK.getTag(TagKey.create(Registries.BLOCK, element.id()));
+                    Optional<HolderSet.Named<Block>> tag = BuiltInRegistries.BLOCK.get(TagKey.create(Registries.BLOCK, element.id()));
 
                     tag.ifPresent(clickThroughBlocks::add);
                 } else {
-                    BuiltInRegistries.BLOCK.getHolder(element.id()).ifPresent(clickThroughBlocks::add);
+                    BuiltInRegistries.BLOCK.get(element.id()).ifPresent(clickThroughBlocks::add);
                 }
             }
         }
@@ -88,11 +88,11 @@ public class Config {
             var elements = ExtraCodecs.TAG_OR_ELEMENT_ID.listOf().parse(new Dynamic<>(JavaOps.INSTANCE, CLICK_THROUGH_ENTITIES.get())).getOrThrow();
             for (ExtraCodecs.TagOrElementLocation element : elements) {
                 if (element.tag()) {
-                    Optional<HolderSet.Named<EntityType<?>>> tag = BuiltInRegistries.ENTITY_TYPE.getTag(TagKey.create(Registries.ENTITY_TYPE, element.id()));
+                    Optional<HolderSet.Named<EntityType<?>>> tag = BuiltInRegistries.ENTITY_TYPE.get(TagKey.create(Registries.ENTITY_TYPE, element.id()));
 
                     tag.ifPresent(clickThroughEntities::add);
                 } else {
-                    BuiltInRegistries.ENTITY_TYPE.getHolder(element.id()).ifPresent(clickThroughEntities::add);
+                    BuiltInRegistries.ENTITY_TYPE.get(element.id()).ifPresent(clickThroughEntities::add);
                 }
             }
         }

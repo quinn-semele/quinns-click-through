@@ -3,7 +3,7 @@ import net.neoforged.moddev.shadow.org.codehaus.plexus.util.StringUtils
 plugins {
     `java-library`
     idea
-    id("net.neoforged.moddev") version "0.1.126"
+    id("net.neoforged.moddev") version "1.0.21"
 }
 
 version = project.property("mod_version") as String
@@ -33,16 +33,6 @@ neoForge {
 
             systemProperty("neoforge.enabledGameTestNamespaces", "quinnsclickthrough")
 
-            // Recommended logging data for a userdev environment
-            // The markers can be added/remove as needed separated by commas.
-            // "SCAN": For mods scan.
-            // "REGISTRIES": For firing of registry events.
-            // "REGISTRYDUMP": For getting the contents of all registries.
-            //systemProperty("forge.logging.markers", "REGISTRIES")
-
-            // Recommended logging level for the console
-            // You can set various levels here.
-            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             logLevel = org.slf4j.event.Level.INFO
             ideName = "NeoForge - ${StringUtils.capitalise(name)}"
         }

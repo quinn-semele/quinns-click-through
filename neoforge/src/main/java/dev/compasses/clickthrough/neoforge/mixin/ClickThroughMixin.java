@@ -68,10 +68,10 @@ public abstract class ClickThroughMixin {
 
         if (supportingBlockPos != null) {
             if (ClickThrough.shouldInteractWith(level, supportingBlockPos)) {
-                float partialTicks = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
+                float partialTicks = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(true);
                 var closest = level.getBlockState(supportingBlockPos).getShape(level, supportingBlockPos).move(supportingBlockPos.getX(), supportingBlockPos.getY(), supportingBlockPos.getZ()).closestPointTo(player.getEyePosition(partialTicks));
 
-                hitResult = new BlockHitResult(closest.orElse(Vec3.atCenterOf(supportingBlockPos)), Direction.getNearest(player.getLookAngle()), supportingBlockPos, false);
+                hitResult = new BlockHitResult(closest.orElse(Vec3.atCenterOf(supportingBlockPos)), Direction.getApproximateNearest(player.getLookAngle()), supportingBlockPos, false);
                 startUseItem();
                 hitResult = hit;
 
